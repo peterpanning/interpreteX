@@ -2,13 +2,15 @@ package interpreter;
 
 import interpreter.ByteCode.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Program {
 
     private ArrayList<ByteCode> program;
+    private HashMap<String, Integer> labelAddrs;
 
     public Program() {
-        program = new ArrayList<>();
+        program = new ArrayList<ByteCode>();
     }
 
     protected ByteCode getCode(int pc) {
@@ -28,10 +30,37 @@ public class Program {
      * @param program Program object that holds a list of ByteCodes
      */
     public void resolveAddrs(Program program) {
+        // go through the program and find all the labels. add their string
+        // and the iteration during which we found them to a hashmap.
+        for (int i = 0; i < program.getSize(); i++)  {
+            if (program.getCode(i) instanceof LabelCode) {
+                labelAddrs.put(((LabelCode) program.getCode(i)).getLabel(), i);
+            }
+        }
+        // then, go through the program and look for all FalseBranch, GoTo, and Call
+        // ByteCodes and set their destination strings to the corresponding label
+        // strings from the program's labelAddrs HashMap.
+        for (int i = 0; i < program.getSize(); i++) {
+            if (program.getCode(i) instanceof FalseBranchCode) {
+                // TODO: This is really ugly and might not work
 
+                // get the bytecode's address as a string, look it up in the hashmap,
+                // get the address as an integer, save it to the bytecode
+
+                ((FalseBranchCode) program.getCode(i)).setDestInt(
+                        program.getAddrs().get( ((FalseBranchCode) program.getCode(i)).getDestStr()));
+            }
+            else if (program.getCode(i) instanceof GoToCode) {
+                ((GoToCode) program.getCode(i)).setDestInt(
+                        program.getAddrs().get( ((GoToCode) program.getCode(i)).getDestStr()));
+            }
+            else if (program.getCode(i) instanceof CallCode) {
+                ((CallCode) program.getCode(i)).setDestInt(
+                        program.getAddrs().get( ((CallCode) program.getCode(i)).getDestStr()));
+            }
+        }
     }
-
-
-
-
+    public HashMap<String, Integer> getAddrs() {
+        return labelAddrs;
+    }
 }
