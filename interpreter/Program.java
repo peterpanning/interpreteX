@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Program {
 
     private ArrayList<ByteCode> program;
-    private HashMap<String, Integer> labelAddrs;
+    private HashMap<String, Integer> labelAddrs = new HashMap<String, Integer>();
 
     public Program() {
         program = new ArrayList<ByteCode>();
@@ -42,17 +42,15 @@ public class Program {
         // strings from the program's labelAddrs HashMap.
         for (int i = 0; i < program.getSize(); i++) {
             if (program.getCode(i) instanceof FalseBranchCode) {
-                // TODO: This is really ugly and might not work
-
                 // get the bytecode's address as a string, look it up in the hashmap,
                 // get the address as an integer, save it to the bytecode
 
                 ((FalseBranchCode) program.getCode(i)).setDestInt(
                         program.getAddrs().get( ((FalseBranchCode) program.getCode(i)).getDestStr()));
             }
-            else if (program.getCode(i) instanceof GoToCode) {
-                ((GoToCode) program.getCode(i)).setDestInt(
-                        program.getAddrs().get( ((GoToCode) program.getCode(i)).getDestStr()));
+            else if (program.getCode(i) instanceof GotoCode) {
+                ((GotoCode) program.getCode(i)).setDestInt(
+                        program.getAddrs().get( ((GotoCode) program.getCode(i)).getDestStr()));
             }
             else if (program.getCode(i) instanceof CallCode) {
                 ((CallCode) program.getCode(i)).setDestInt(
@@ -63,4 +61,6 @@ public class Program {
     public HashMap<String, Integer> getAddrs() {
         return labelAddrs;
     }
+
+    public void addByteCode(ByteCode bc) { program.add(bc); }
 }

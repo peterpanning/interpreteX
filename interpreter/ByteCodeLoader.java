@@ -19,6 +19,7 @@ public class ByteCodeLoader extends Object {
     public ByteCodeLoader(String file) throws IOException {
         this.byteSource = new BufferedReader(new FileReader(file));
     }
+
     /**
      * This function should read one line of source code at a time.
      * For each line it should:
@@ -29,27 +30,33 @@ public class ByteCodeLoader extends Object {
      *      the newly created bytecode instance via the init function.
      */
     public Program loadCodes() {
+        program = new Program();
+        ArrayList<String> tokList;
+
         try {
             line = byteSource.readLine();
+            while (line != null) {
+                strtok = new StringTokenizer(line);
+                token = strtok.nextToken();
+                token = CodeTable.getClassName(token);
+                try {
+                    ByteCode bc = (ByteCode) (Class.forName("interpreter.ByteCode." + token).newInstance());
+                    tokList = new ArrayList<String>();
+                    while (strtok.hasMoreTokens()) {
+                        tokList.add(strtok.nextToken());
+                    }
+                    bc.init(tokList);
+                    program.addByteCode(bc);
+                } catch (Exception e) {
+                    System.out.println("ByteCodeLoader Exception: " + e);
+                }
+                line = byteSource.readLine();
+            }
         }
-        catch (Exception e) {
+        catch(Exception e) {
             System.out.println(e);
         }
-        strtok = new StringTokenizer(line);
-        token = strtok.nextToken();
-        token = CodeTable.getClassName(token);
-        // TODO: Fix this
-        try {
-            ByteCode bc = (ByteCode)(Class.forName("interpreter."+token).newInstance());
-            token = strtok.nextToken();
-            // TODO: trying putting it in an array list
-            ArrayList<String> toklist = new ArrayList<String>();
-            toklist.add(token);
-            bc.init((toklist));
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
+        program.resolveAddrs(program);
+        return program;
     }
 }

@@ -1,10 +1,17 @@
 package interpreter.ByteCode;
 
+import interpreter.VirtualMachine;
+
 import java.util.ArrayList;
 
 public class ArgsCode extends ByteCode {
-    public void init(ArrayList ary){
-    };
+    private int args;
 
-    public void execute(){ };
+    public void init(ArrayList<String> ary){
+        args = Integer.parseInt(ary.get(0));
+    }
+
+    public void execute(VirtualMachine vm){
+        vm.runStackPushFrame(args);
+    }
 }

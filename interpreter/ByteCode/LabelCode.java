@@ -1,5 +1,7 @@
 package interpreter.ByteCode;
 
+import interpreter.VirtualMachine;
+
 import java.util.ArrayList;
 
 public class LabelCode extends ByteCode {
@@ -13,5 +15,5 @@ public class LabelCode extends ByteCode {
         return label;
     }
 
-    public void execute(){ };
+    public void execute(VirtualMachine vm){ return; }
 }

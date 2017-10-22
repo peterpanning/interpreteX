@@ -1,5 +1,7 @@
 package interpreter.ByteCode;
 
+import interpreter.VirtualMachine;
+
 import java.util.ArrayList;
 
 public class FalseBranchCode extends ByteCode {
@@ -25,5 +27,9 @@ public class FalseBranchCode extends ByteCode {
     public void setDestInt(int i) {
         destInt = i;
     }
-    public void execute(){ };
+    public void execute(VirtualMachine vm){
+        if (vm.runStackPop() == 0) {
+            vm.setPc(destInt);
+        }
+    }
 }

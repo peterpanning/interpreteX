@@ -1,8 +1,10 @@
 package interpreter.ByteCode;
 
+import interpreter.VirtualMachine;
+
 import java.util.ArrayList;
 
-public class GoToCode extends ByteCode {
+public class GotoCode extends ByteCode {
     private String destStr;
     private int destInt;
 
@@ -26,5 +28,7 @@ public class GoToCode extends ByteCode {
         destInt = i;
     }
 
-    public void execute(){ };
+    public void execute(VirtualMachine vm){
+        vm.setPc(destInt);
+    }
 }

@@ -1,5 +1,7 @@
 package interpreter.ByteCode;
 
+import interpreter.VirtualMachine;
+
 import java.util.ArrayList;
 
 public class CallCode extends ByteCode {
@@ -26,5 +28,12 @@ public class CallCode extends ByteCode {
         destInt = i;
     }
 
-    public void execute(){ };
+    public void execute(VirtualMachine vm){
+        // Each time a function is entered, the PC should be pushed onto the
+        // return address stack.
+        // When the function exits, the PC should be restored from the return address
+        // stack. This happens in ReturnCode.
+        vm.returnAddrsPush(vm.getPc());
+        vm.setPc(destInt);
+    }
 }
