@@ -20,6 +20,14 @@ public class GotoCode extends ByteCode {
         return destStr;
     }
 
+    @Override
+    public String toString() {
+        return "GotoCode{" +
+                "destStr='" + destStr + '\'' +
+                ", destInt=" + destInt +
+                '}';
+    }
+
     public int getDestInt() {
         return destInt;
     }

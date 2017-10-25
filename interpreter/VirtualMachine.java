@@ -24,26 +24,32 @@ public class VirtualMachine {
         runStack = new RunTimeStack();
         returnAddrs = new Stack<Integer>();
         isRunning = true;
-        dumpOn = false;
+        boolean dumpOn = true;
+
         while(isRunning){
             code = program.getCode(pc);
             code.execute(this);
-            runStack.dump();
+            //dump();
+            if (dumpOn) {
+                System.out.println(code.toString());
+                // TODO: Add to_string methods for all bytecode classes.
+                runStack.dump();
+            }
             pc++;
         }
     }
-
+/*
     public void dump() {
         if (dumpOn) {
-            System.out.println(code);
+            System.out.println(code.toString());
+            // TODO: Add to_string methods for all bytecode classes.
             runStack.dump();
         }
     }
-
+*/
     public void setDumpOn(boolean bool) {
         dumpOn = bool;
     }
-
 
     public int runStackPop() {
         return runStack.pop();
@@ -86,5 +92,7 @@ public class VirtualMachine {
     public void load(int offset) {
         runStack.load(offset);
     }
+
+    public int frameSize() { return runStack.frameSize(); }
 
 }

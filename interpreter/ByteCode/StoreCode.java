@@ -18,4 +18,12 @@ public class StoreCode extends ByteCode {
         // store it offset n from the top of the frame
         vm.store(offset);
     }
+
+    @Override
+    public String toString() {
+        return "StoreCode{" +
+                "offset=" + offset +
+                ", variable='" + variable + '\'' +
+                '}';
+    }
 }

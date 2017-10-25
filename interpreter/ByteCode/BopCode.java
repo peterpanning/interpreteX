@@ -12,6 +12,15 @@ public class BopCode extends ByteCode {
         op = ary.get(0);
     }
 
+    @Override
+    public String toString() {
+        return "BopCode{" +
+                "lhop=" + lhop +
+                ", rhop=" + rhop +
+                ", op='" + op + '\'' +
+                '}';
+    }
+
     public void execute(VirtualMachine vm){
         rhop = vm.runStackPop();
         lhop = vm.runStackPop();

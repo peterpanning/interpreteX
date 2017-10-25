@@ -36,4 +36,12 @@ public class CallCode extends ByteCode {
         vm.returnAddrsPush(vm.getPc());
         vm.setPc(destInt);
     }
+
+    @Override
+    public String toString() {
+        return "CallCode{" +
+                "destStr='" + destStr + '\'' +
+                ", destInt=" + destInt +
+                '}';
+    }
 }

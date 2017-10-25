@@ -31,7 +31,7 @@ public class ByteCodeLoader extends Object {
      */
     public Program loadCodes() {
         program = new Program();
-        ArrayList<String> tokList;
+        ArrayList<String> tokList = new ArrayList<String>();
 
         try {
             line = byteSource.readLine();
@@ -41,7 +41,6 @@ public class ByteCodeLoader extends Object {
                 token = CodeTable.getClassName(token);
                 try {
                     ByteCode bc = (ByteCode) (Class.forName("interpreter.ByteCode." + token).newInstance());
-                    tokList = new ArrayList<String>();
                     while (strtok.hasMoreTokens()) {
                         tokList.add(strtok.nextToken());
                     }
@@ -49,8 +48,10 @@ public class ByteCodeLoader extends Object {
                     program.addByteCode(bc);
                 } catch (Exception e) {
                     System.out.println("ByteCodeLoader Exception: " + e);
+                    e.printStackTrace();
                 }
                 line = byteSource.readLine();
+                tokList.clear();
             }
         }
         catch(Exception e) {

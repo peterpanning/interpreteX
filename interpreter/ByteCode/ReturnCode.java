@@ -15,4 +15,9 @@ public class ReturnCode extends ByteCode {
         vm.runStackPopFrame();
         vm.setPc(vm.returnAddrsPop());
     }
+
+    @Override
+    public String toString() {
+        return "ReturnCode{}";
+    }
 }

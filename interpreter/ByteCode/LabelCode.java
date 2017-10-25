@@ -15,5 +15,12 @@ public class LabelCode extends ByteCode {
         return label;
     }
 
+    @Override
+    public String toString() {
+        return "LabelCode{" +
+                "label='" + label + '\'' +
+                '}';
+    }
+
     public void execute(VirtualMachine vm){ return; }
 }

@@ -11,6 +11,13 @@ public class ArgsCode extends ByteCode {
         args = Integer.parseInt(ary.get(0));
     }
 
+    @Override
+    public String toString() {
+        return "ArgsCode{" +
+                "args=" + args +
+                '}';
+    }
+
     public void execute(VirtualMachine vm){
         vm.runStackPushFrame(args);
     }

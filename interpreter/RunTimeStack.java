@@ -1,6 +1,7 @@
 package interpreter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class RunTimeStack {
@@ -18,9 +19,37 @@ public class RunTimeStack {
     }
 
     public void dump() {
-        System.out.println("Runtime Stack: ");
-        for (int i = 0; i < runTimeStack.size(); i++) {
-            System.out.println(runTimeStack.get(runTimeStack.size() - i - 1) + "\n");
+        // Print the runtime stack, frames separated by brackets and
+        // variables within frames separated by commas
+
+        ArrayList<Integer> frames = new ArrayList<Integer>();
+        for (int i = 0; i < framePointer.size(); i++) {
+            frames.add(framePointer.pop());
+            Collections.reverse(frames); // Frames as an ArrayList
+        }
+        // push the items from frames back into the framePointer stack
+        for (int i = 0; i < frames.size(); i++) {
+            framePointer.push(frames.get(i));
+        }
+        // Use an external iterator variable to track position in frames ArrayList
+        int j = 0;
+        // Open with a bracket,
+        if (runTimeStack.size() > 0) {
+            String output = "[";
+            // Then print every item in the runTimeStack
+            for (int i = 0; i < runTimeStack.size(); i++) {
+                output = output + runTimeStack.get(i) + ",";
+                // Add in brackets where necessary
+                if (frames.size() > 1 && i == frames.get(j)) {
+                    output = output + "] [";
+                    j++;
+                }
+            }
+            // Trim closing comma
+            output = output.substring(0, output.length() - 1);
+            // Close with another bracket
+            output = output + "]";
+            System.out.println(output);
         }
     }
 
@@ -28,8 +57,11 @@ public class RunTimeStack {
 
     public int pop() {
         // Used to pop items from the runTimeStack
-        int i = runTimeStack.get(runTimeStack.size() - 1);
-        runTimeStack.remove(runTimeStack.size() - 1);
+        int i = 0;
+        if (runTimeStack.size() != 0) {
+            i = runTimeStack.get(runTimeStack.size() - 1);
+            runTimeStack.remove(runTimeStack.size() - 1);
+        }
         return i;
     }
 
@@ -52,12 +84,12 @@ public class RunTimeStack {
         // We pop the top frame when we return from a function; before popping, the
         // function’s return value is at the top of the stack so we’ll save the value,
         // pop the top frame and then push the return value
-        int frameBottom = framePointer.pop();
-        int temp = this.pop();
-        while (runTimeStack.size() > frameBottom) {
+        int frameSize = framePointer.pop();
+        int rv = this.pop();
+        while (runTimeStack.size() - 1 > frameSize) {
             this.pop();
         }
-        this.push(temp);
+        this.push(rv);
     }
 
     public int store(int offset) {
@@ -68,12 +100,22 @@ public class RunTimeStack {
 
     public int load(int offset) {
         // used to load variables onto the stack
-        push(runTimeStack.get(runTimeStack.size() - offset - 1));
+        // loads variable which is *offset* above the frame pointer onto the top of the stack
+        if (runTimeStack.size() != 0) {
+            int temp = runTimeStack.get(framePointer.peek() + offset);
+            runTimeStack.remove(framePointer.peek() + offset);
+            push(temp);
+        }
         return 0;
+
     }
 
     public void push(Integer i) {
         // used to load literals onto the stack
         runTimeStack.add(i);
+    }
+
+    public int frameSize() {
+        return runTimeStack.size() - framePointer.peek();
     }
 }

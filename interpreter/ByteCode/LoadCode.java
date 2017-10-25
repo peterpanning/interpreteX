@@ -12,6 +12,14 @@ public class LoadCode extends ByteCode {
         variable = ary.get(1);
     }
 
+    @Override
+    public String toString() {
+        return "LoadCode{" +
+                "offset=" + offset +
+                ", variable='" + variable + '\'' +
+                '}';
+    }
+
     public void execute(VirtualMachine vm){
         vm.load(offset);
     }

@@ -24,6 +24,14 @@ public class FalseBranchCode extends ByteCode {
         return destInt;
     }
 
+    @Override
+    public String toString() {
+        return "FalseBranchCode{" +
+                "destStr='" + destStr + '\'' +
+                ", destInt=" + destInt +
+                '}';
+    }
+
     public void setDestInt(int i) {
         destInt = i;
     }

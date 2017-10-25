@@ -17,4 +17,11 @@ public class ReadCode extends ByteCode {
         input = scan.nextInt();
         vm.runStackPush(input);
     }
+
+    @Override
+    public String toString() {
+        return "ReadCode{" +
+                "input=" + input +
+                '}';
+    }
 }
