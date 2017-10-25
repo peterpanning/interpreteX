@@ -40,7 +40,7 @@ public class RunTimeStack {
             for (int i = 0; i < runTimeStack.size(); i++) {
                 output = output + runTimeStack.get(i) + ",";
                 // Add in brackets where necessary
-                if (frames.size() > 1 && i == frames.get(j)) {
+                if (frames.size() > j && i == frames.get(j)) {
                     output = output + "] [";
                     j++;
                 }
@@ -94,7 +94,7 @@ public class RunTimeStack {
 
     public int store(int offset) {
         // used to store into variables
-        runTimeStack.add(runTimeStack.size() - offset, pop());
+        runTimeStack.add(runTimeStack.size() - offset - 1, pop());
         return 0;
     }
 
@@ -103,7 +103,6 @@ public class RunTimeStack {
         // loads variable which is *offset* above the frame pointer onto the top of the stack
         if (runTimeStack.size() != 0) {
             int temp = runTimeStack.get(framePointer.peek() + offset);
-            runTimeStack.remove(framePointer.peek() + offset);
             push(temp);
         }
         return 0;
