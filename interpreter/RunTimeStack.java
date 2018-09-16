@@ -32,7 +32,7 @@ public class RunTimeStack {
             framePointer.push(frames.get(i));
         }
         // Use an external iterator variable to track position in frames ArrayList
-        int j = 0;
+        int j = 1;
         // Open with a bracket,
         if (runTimeStack.size() > 0) {
             String output = "[";

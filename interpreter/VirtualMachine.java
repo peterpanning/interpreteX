@@ -24,7 +24,7 @@ public class VirtualMachine {
         runStack = new RunTimeStack();
         returnAddrs = new Stack<Integer>();
         isRunning = true;
-        boolean dumpOn = false;
+        boolean dumpOn = true;
 
         while(isRunning){
             code = program.getCode(pc);
